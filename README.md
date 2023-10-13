@@ -4,7 +4,7 @@ En aquesta pràctica treballarem la importació massiva de dades en Oracle utili
 
 ## Materials i Recursos
 Per fer el lliurament d’aquest part disposeu dels següents materials i recursos:
-- L'enunciat de la [pràctica[(Enunciat_Practica_2.pdf).
+- L'enunciat de la [pràctica](Enunciat_Practica_2.pdf).
 - Scripts Python de referència: El codi d'aquest repositori 
 - Dades d’exemple de la UCI: Iris, Ionosphere, breast-cancer, letter-recognition. Us els podeu baixar del repositori oficial o del CV de l'assignatura
 
