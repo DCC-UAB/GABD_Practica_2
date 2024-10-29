@@ -1,22 +1,53 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import datasets
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier as RFC
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.metrics import f1_score
-from sklearn.metrics import precision_recall_curve
-#from sklearn.metrics import average_precision_score
+
 from sklearn.metrics import accuracy_score
 from datetime import datetime
 import socket
 from itertools import product
+from ucimlrepo import fetch_ucirepo
 
 import oracledb
 from GABDConnect.oracleConnection import oracleConnection as orcl
+import logging
+from argparse import ArgumentParser
+
+
+class TestOptions(ArgumentParser):
+
+  def __init__(self):
+
+    super().__init__(
+      description="This script insert data from the UCI repositori."
+    )
+
+    super().add_argument("datasetName", type=str, default=None, help="Name of the imported dataset.")
+
+    super().add_argument("--user", type=str, default=None, help="string with the user used to connect to the Oracle DB.")
+    super().add_argument("--passwd", type=str, default=None,
+                         help="string with the password used to connect to the Oracle DB.")
+    super().add_argument("--hostname", type=str, default="localhost",
+                         help="name of the Oracle Server you want to connect")
+    super().add_argument("--port", type=str, default="1521", help="Oracle Port connection.")
+    super().add_argument("--serviceName", type=str, default="orcl", help="Oracle Service Name")
+
+    super().add_argument("--ssh_tunnel", type=str, default=None,help="name of the Server you want to create a ssh tunnel")
+    super().add_argument("--ssh_user", type=str, default="student",  help="SSH user")
+    super().add_argument("--ssh_password", type=str, default=None, help="SSH password")
+    super().add_argument("--ssh_port", type=str, default="22", help="SSH port")
+
+
+
+  def parse(self):
+    return super().parse_args()
 
 
 if __name__ == "__main__":
+
+    args = TestOptions().parse()
 
     host = socket.gethostname()
     numIterations = 2
@@ -32,16 +63,15 @@ if __name__ == "__main__":
                         'criterion': ['gini', 'entropy', 'log_loss']}
                }
 
-    iris = datasets.load_iris()
-    Xo = iris.data
-    yo = iris.target
+    DATASETS = {"Iris":"Iris", "BreastCancer":"Breast Cancer Wisconsin (Diagnostic)",
+                "Ionosphere":"Ionosphere", "Letter":"Letter Recognition"}
 
-    #Xo = Xo[yo != 0, :2]
-    #yo = yo[yo != 0]
 
-    #digits = datasets.load_digits()
-    #X = digits.data
-    #Y = digits.target
+    dataset = fetch_ucirepo(name=DATASETS[args.datasetName])
+    Xo = dataset.data.features.to_numpy()
+    labels = dataset.data.targets.to_numpy().reshape(-1)
+    lut = {l: e for e, l in enumerate(np.unique(labels))}
+    yo = np.array([lut[l] for l in labels])
 
 
     n_sample = len(Xo)

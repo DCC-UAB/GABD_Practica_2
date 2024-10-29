@@ -8,11 +8,13 @@ dependencies:
   - pip:
     - ipykernel
     - git+https://github.com/Oriolrt/GABDConnect
+    - ucimlrepo
   - pymongo
   - sshtunnel
   - scikit-learn
   - tqdm
   - matplotlib
   - pandas
+
 
 
