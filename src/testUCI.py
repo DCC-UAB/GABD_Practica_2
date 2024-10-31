@@ -21,10 +21,10 @@ class TestOptions(ArgumentParser):
   def __init__(self):
 
     super().__init__(
-      description="This script insert data from the UCI repositori."
+      description="This script runs the experiments on the datasets from the UCI repositori."
     )
 
-    super().add_argument("datasetName", type=str, default=None, help="Name of the imported dataset.")
+    super().add_argument("datasetName", type=str, default=None, help="Name of the dataset.")
 
     super().add_argument("--user", type=str, default=None, help="string with the user used to connect to the Oracle DB.")
     super().add_argument("--passwd", type=str, default=None,
